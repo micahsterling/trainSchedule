@@ -6,6 +6,22 @@ export default class {
     this.root = root;
   }
 
+  /**\
+   * clear exsiting and replaces it with new uploaded data
+   * @param {string[]} headerColums list of headings to be used
+   * @param {string[][]} data A 2D array of data for the body
+   */
+  update(data, headerColums= []) {
+    this.clear();
+    this.setHeader(headerColums);
+    this.setBody(data);
+  }
+
+  // clears all contents of the table
+  clear() {
+    this.root.innerHTML = " ";
+  }
+
   /**
    * sets the table header
    * @param {string[]} headerColums list of headings to be used
