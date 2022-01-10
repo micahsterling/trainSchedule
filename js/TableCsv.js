@@ -5,6 +5,11 @@ export default class {
   constructor(root) {
     this.root = root;
   }
+
+  /**
+   * sets the table header
+   * @param {string[]} headerColums list of headings to be used
+   */
   setHeader(headerColums) {
     this.root.insertAdjacentHTML("afterbegin", `
       <thread>
@@ -13,5 +18,7 @@ export default class {
         <tr>
       </tread>
     `);
+
+
   }
 }
