@@ -5,16 +5,15 @@ export default class {
   constructor(root) {
     this.root = root;
   }
-
   /**\
    * clear exsiting and replaces it with new uploaded data
-   * @param {string[]} headerColums list of headings to be used
-   * @param {string[][]} data A 2D array of data for the body
+   * @param {string[]} data list of headings to be used and body of the table
    */
-  update(data, headerColums= []) {
+
+  update(data) {
     this.clear();
-    this.setHeader(headerColums);
-    this.setBody(data);
+    this.setTable(data);
+    sortTable(2)
   }
 
   // clears all contents of the table
@@ -23,37 +22,31 @@ export default class {
   }
 
   /**
-   * sets the table header
-   * @param {string[]} headerColums list of headings to be used
+   * sets the table
+   * @param {string[]} data list of headings to be used and body of the table
   */
-  setHeader(headerColums) {
-    this.root.insertAdjacentHTML("afterbegin", `
-      <thread>
-        <tr>
-          ${ headerColums.map(text => `<th>${text}</th>`).join(" ")}
-        <tr>
-      </tread>
-    `);
-  }
-
-  /**
-   * sets the table body
-   * @param {string[][]} data A 2D array of data for the body
-  */
-  setBody(data) {
-    const rowsHtml = data.map(row => {
-      return `
-        <tr>
-          ${row.map(text => `<td>${text}</td>`).join(" ")}
-        </tr>
-      `;
+  setTable(data) {
+    const unique = new Set();
+    const rowsHtml = data.map((row,index) => {
+      if (index === 0) {
+        return `      
+          ${ row.map((text,i) => `<th onclick="sortTable(${i})">${text}</th>`).join(" ")}
+        `
+      } else {
+        if (unique.has(row[2]) ) {
+          return ""
+        } else {
+            unique.add(row[2])
+          return `
+            <tr>
+              ${row.map((text) => `<td>${text}</td>`).join(" ")}
+            </tr>
+          `;
+        }
+      }
     });
     this.root.insertAdjacentHTML("beforeend",`
-      <tbody>
-        <tr>
-          ${ rowsHtml.join(" ")}
-        <tr>
-      </tbody>
+      ${ rowsHtml.join(" ")}
     `);
   }
 }
